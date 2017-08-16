@@ -1,0 +1,66 @@
+Random test algorithm:
+
+public static String randomize(string)
+{
+	for(int i = 0;i<string.size;i++)
+	{
+		int j = random(string.size);
+		string[i] ^= string[j];
+		string[j] ^= string[i];
+		string[i] ^= string[j];
+	}
+}
+
+schemeSet (if string not equal to item in set, fail)
+{
+	http://
+	ftp://
+	h3t://
+	""
+}
+
+authoritySet (if random number 0-2, check ending is .com -- if random number = 3, check ending is .au 
+-- if random number is 4-5, check equality with 255.255.255.255 or 0.0.0.0)
+{
+	www.google.com
+	go.com
+	255.com
+	go.au
+	255.255.255.255
+	0.0.0.0
+}
+
+urlPortSet (this one is tricky, since having : not at the beginning could still result in a valid url.  might 
+just have to pick from a set of known good/bad instead of randomizing)
+{
+
+}
+
+pathSet (check that beginning is '/' or "", no three in a row are '/' and no periods)
+{
+	/../
+	/test
+	/test/
+	/123/
+	/test/test
+	/test/test/
+	""
+}
+
+querySet (check that it's "" at beginning or and no two '=' or '?' and '=' next to each other and '?' before any '='.
+tricky because the ? doesn't have to be at the beginning because it would be a valid path still)
+{
+	""
+	<to insert more for this set later>
+}
+
+for (int i = 0;i<some big number;i++)
+{
+	bool valid = true;
+	pick random item from each set using random number from 0 to size of set
+	randomize item
+	if randomized item doesnt satisfy conditions of valid item in set
+		valid = false
+	concatenate partial strings to url
+	testIsValid(url) check against valid
+}
