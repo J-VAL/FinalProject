@@ -35,7 +35,58 @@ public class UrlValidatorTest extends TestCase {
    public UrlValidatorTest(String testName) {
       super(testName);
    }
+   
+   public static String shuffle(String string)
+   {
+	   char[] chars = string.toCharArray();
+	    for (int i = 0; i < chars.length; i++) {
+	        int j = (int)(Math.random() * chars.length);
+	        chars[i] ^= chars[j];
+	        chars[j] ^= chars[i];
+	        chars[i] ^= chars[j];
+	    }
+   }
 
+   String[] schemeSet = {
+		   "http://",
+		   "ftp://",
+		   "h3t://",
+		   "\"\""
+		 };
+   String[] authSet = {
+		   "www.google.com", 
+		   "go.com", 
+		   "255.com", 
+		   "go.au",
+		   "255.255.255.255",
+		   "0.0.0.0"
+		 };
+   String[] portSet = {
+		   "\"\"", 
+		   ":1", 
+		   ":20", 
+		   ":300",
+		   ":4000",
+		   ":65535",
+		   ":-1",
+		   ":65536",
+		   ":55aba"
+		 };
+   String[] pathSet = {
+		   "/../", 
+		   "/test", 
+		   "/test/", 
+		   "/123/",
+		   "/test/test",
+		   "/test/test/",
+		   "\"\""
+		 };
+   String[] querySet = {
+		   "\"\"", 
+		   "?name=Mike", 
+		   "?name=Mike&color=red", 
+		   "?name=Mike&color=red&food=apple"  
+		 };
    
    
    public void testManualTest()
@@ -253,9 +304,93 @@ public class UrlValidatorTest extends TestCase {
    
    public void testIsValid()
    {
-	   for(int i = 0;i<10000;i++)
+	   boolean valid = true;
+	   int i = 0;
+	   while (i<10000)
 	   {
-		   
+		    int j = (int)(Math.random() * schemeSet.length);
+			String randomScheme = shuffle(schemeSet[j]);	   
+		    if(randomScheme != schemeSet[0] && randomScheme != schemeSet[1]
+		    		&& randomScheme != schemeSet[2] && randomScheme != schemeSet[3])
+		    	valid = false;
+		    j = (int)(Math.random() * authSet.length);
+		    String randomAuth = shuffle(authSet[j]);
+		    if(j < 3 && randomAuth.substring((randomAuth.length - 4),randomAuth.length - 1) != ".com")
+		    	valid = false;
+		    else if(j == 3 && randomAuth.substring((randomAuth.length - 3),randomAuth.length - 1) != ".au")
+		    	valid = false;
+		    else
+		    {
+		    	if(randomAuth != authSet[4] && randomAuth != authSet[5])
+		    		valid = false;
+		    }
+		    j = (int)(Math.random() * portSet.length);
+		    String randomPort = portSet[j];
+		    if(j>5)
+		    	valid = false;
+		    j = (int)(Math.random() * pathSet.length);
+		    String randomPath = shuffle(pathSet[j]);
+		    if(randomPath != "" || randomPath[0] == "/")
+		    {
+		    	for(int k = 0;k<randomPath.length - 2;k++)
+		    	{
+		    		if(randomPath[k] == "/" && randomPath[k+1] == "/" && randomPath[k+2] == "/")
+		    			valid = false;
+		    	}
+		    }
+		    else
+		    	valid = false;
+		    j = (int)(Math.random() * querySet.length);
+		    String randomQuery = shuffle(querySet[j]);
+	    	int question;
+	    	int minEquals = querySet.length - 1;
+	    	int minAnd = querySet.length - 1;
+		    for(int k = 0;k<randomQuery.length-1;k++)
+		    {
+		    	int And;
+		    	int Equals;
+		    	if(randomQuery[k] == "?")
+		    		question = k;
+		    	else if(randomQuery[k+1] = "?")
+		    		question = k;
+		    	else if(randomQuery[k] == "&")
+		    	{
+		    		And = k;
+		    		if(And<minAnd)
+		    			minAnd = And;
+		    	}
+		    	else if(randomQuery[k+1] == "&")
+		    	{
+		    		And = k+1;
+		    		if(And<minAnd)
+		    			minAnd = And;
+		    	}
+		    	else if(randomQuery[k] == "=")
+		    	{
+		    		equals = k;
+		    		if(equals<minEqals)
+		    			minEquals = equals;
+		    	}
+		    	else if(randomQuery[k+1] == "=")
+		    	{
+		    		equals = k+1;
+		    		if(equals<minEqals)
+		    			minEquals = equals;
+		    	}
+		    	else if(randomQuery[k] == "?" && randomQuery[k+1] == "="
+		    			|| randomQuery[k] == "?" && randomQuery[k+1] == "&"
+		    			|| randomQuery[k] == "=" && randomQuery[k+1] == "&"
+		    			|| randomQuery[k] == "&" && randomQuery[k+1] == "=")
+		    		valid = false;
+		    }
+		    if(minEquals < question || minAnd < question)
+		    	valid = false;
+		    String fullUrl = randomScheme + randomAuth + randomPort + randomPath + randomQuery;
+		    if(valid)
+		    	assert(urlVal.isValid(fullUrl));
+		    else
+		    	assert(!urlVal.isValid(fullUrl));
+			i++;
 	   }
    }
    
