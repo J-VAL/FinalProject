@@ -221,10 +221,10 @@ public class UrlValidatorTest extends TestCase {
       assert(urlVal.isValid("http://www.google.com/gmail"));
       assert(urlVal.isValid("http://www.google.com/!gmail"));
       assert(urlVal.isValid("http://www.google.com/a/b/c/d/e"));
-      assert(!urlVal.isValid("http://www.google.com/1233324234234234"));
-      assert(!urlVal.isValid("http://www.google.com/%.txt.!()"));
-      assert(!urlVal.isValid("http://www.google.com/-----------------"));
-      assert(!urlVal.isValid("http://www.google.com/***************"));
+      assert(urlVal.isValid("http://www.google.com/1233324234234234"));
+      assert(urlVal.isValid("http://www.google.com/%.txt.!()"));
+      assert(urlVal.isValid("http://www.google.com/-----------------"));
+      assert(urlVal.isValid("http://www.google.com/***************"));
       assert(!urlVal.isValid("http://www.google.com//"));
 
       //Testing the query
