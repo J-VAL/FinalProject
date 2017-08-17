@@ -45,6 +45,7 @@ public class UrlValidatorTest extends TestCase {
 	        chars[j] ^= chars[i];
 	        chars[i] ^= chars[j];
 	    }
+	    return new String(chars);
    }
 
    String[] schemeSet = {
@@ -304,6 +305,7 @@ public class UrlValidatorTest extends TestCase {
    
    public void testIsValid()
    {
+	   UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
 	   boolean valid = true;
 	   int i = 0;
 	   while (i<10000)
@@ -315,9 +317,10 @@ public class UrlValidatorTest extends TestCase {
 		    	valid = false;
 		    j = (int)(Math.random() * authSet.length);
 		    String randomAuth = shuffle(authSet[j]);
-		    if(j < 3 && randomAuth.substring((randomAuth.length - 4),randomAuth.length - 1) != ".com")
+		    char [] charAuth = randomAuth.toCharArray();
+		    if(j < 3 && randomAuth.substring((charAuth.length - 4),charAuth.length - 1) != ".com")
 		    	valid = false;
-		    else if(j == 3 && randomAuth.substring((randomAuth.length - 3),randomAuth.length - 1) != ".au")
+		    else if(j == 3 && randomAuth.substring((charAuth.length - 3),charAuth.length - 1) != ".au")
 		    	valid = false;
 		    else
 		    {
@@ -330,11 +333,12 @@ public class UrlValidatorTest extends TestCase {
 		    	valid = false;
 		    j = (int)(Math.random() * pathSet.length);
 		    String randomPath = shuffle(pathSet[j]);
-		    if(randomPath != "" || randomPath[0] == "/")
+		    char[] charPath = randomPath.toCharArray();
+		    if(randomPath != "" || charPath[0] == '/')
 		    {
-		    	for(int k = 0;k<randomPath.length - 2;k++)
+		    	for(int k = 0;k<charPath.length - 2;k++)
 		    	{
-		    		if(randomPath[k] == "/" && randomPath[k+1] == "/" && randomPath[k+2] == "/")
+		    		if(charPath[k] == '/' && charPath[k+1] == '/' && charPath[k+2] == '/')
 		    			valid = false;
 		    	}
 		    }
@@ -342,45 +346,46 @@ public class UrlValidatorTest extends TestCase {
 		    	valid = false;
 		    j = (int)(Math.random() * querySet.length);
 		    String randomQuery = shuffle(querySet[j]);
-	    	int question;
-	    	int minEquals = querySet.length - 1;
-	    	int minAnd = querySet.length - 1;
-		    for(int k = 0;k<randomQuery.length-1;k++)
+		    char[] charQuery = randomQuery.toCharArray();
+	    	int question = charQuery.length-1;
+	    	int minEquals = charQuery.length - 1;
+	    	int minAnd = charQuery.length - 1;
+		    for(int k = 0;k<charPath.length-1;k++)
 		    {
 		    	int And;
 		    	int Equals;
-		    	if(randomQuery[k] == "?")
+		    	if(charQuery[k] == '?')
 		    		question = k;
-		    	else if(randomQuery[k+1] = "?")
-		    		question = k;
-		    	else if(randomQuery[k] == "&")
+		    	else if(charQuery[k+1] == '?')
+		    		question = k+1;
+		    	else if(charQuery[k] == '&')
 		    	{
 		    		And = k;
 		    		if(And<minAnd)
 		    			minAnd = And;
 		    	}
-		    	else if(randomQuery[k+1] == "&")
+		    	else if(charQuery[k+1] == '&')
 		    	{
 		    		And = k+1;
 		    		if(And<minAnd)
 		    			minAnd = And;
 		    	}
-		    	else if(randomQuery[k] == "=")
+		    	else if(charQuery[k] == '=')
 		    	{
-		    		equals = k;
-		    		if(equals<minEqals)
-		    			minEquals = equals;
+		    		Equals = k;
+		    		if(Equals<minEquals)
+		    			minEquals = Equals;
 		    	}
-		    	else if(randomQuery[k+1] == "=")
+		    	else if(charQuery[k+1] == '=')
 		    	{
-		    		equals = k+1;
-		    		if(equals<minEqals)
-		    			minEquals = equals;
+		    		Equals = k+1;
+		    		if(Equals<minEquals)
+		    			minEquals = Equals;
 		    	}
-		    	else if(randomQuery[k] == "?" && randomQuery[k+1] == "="
-		    			|| randomQuery[k] == "?" && randomQuery[k+1] == "&"
-		    			|| randomQuery[k] == "=" && randomQuery[k+1] == "&"
-		    			|| randomQuery[k] == "&" && randomQuery[k+1] == "=")
+		    	else if(charQuery[k] == '?' && charQuery[k+1] == '='
+		    			|| charQuery[k] == '?' && charQuery[k+1] == '&'
+		    			|| charQuery[k] == '=' && charQuery[k+1] == '&'
+		    			|| charQuery[k] == '&' && charQuery[k+1] == '=')
 		    		valid = false;
 		    }
 		    if(minEquals < question || minAnd < question)
