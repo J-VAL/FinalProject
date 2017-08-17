@@ -90,147 +90,204 @@ public class UrlValidatorTest extends TestCase {
 		 };
    
    
+   // MANUAL TESTS
    public void testManualTest()
    {
 	   UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
-      System.out.print("http://www.amazon.com: ");
-      System.out.println(urlVal.isValid("http://www.amazon.com"));
+      // System.out.print("http://www.amazon.com: ");
+      // System.out.println(urlVal.isValid("http://www.amazon.com"));
 
-
-
-
-      // Our Manual Tests
+      // Our Manual Tests (True = Pass, False = Fail)
       // Expected Result: Fail, Test Result: Fail
-      System.out.print("Null entry : ");
+      System.out.print("Null entry");
+      System.out.print("\nExpected Results: false, Test Results: ");
       System.out.println(urlVal.isValid(""));
 
       // Expected Result: Pass, Test Result: Pass
-      System.out.print("http://www.gooooooooooooogle : ");
+      System.out.print("\nhttp://www.gooooooo ... oooooogle.com");
+      System.out.print("\nExpected Results: true, Test Results: ");
       System.out.println(urlVal.isValid("http://www.gooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooogle.com"));
 
       // Expected Result: Pass, Test Result: Pass
-      System.out.print("http://www.google.com : ");
+      System.out.print("\nhttp://www.google.com");
+      System.out.print("\nExpected Results: true, Test Results: ");
       System.out.println(urlVal.isValid("http://www.google.com"));
 
       // Expected Result: Pass, Test Result: Pass
-      System.out.print("http://www.google.org : ");
+      System.out.print("\nhttp://www.google.org");
+      System.out.print("\nExpected Results: true, Test Results: ");
       System.out.println(urlVal.isValid("http://www.google.org"));
 
       // Expected Result: Pass, Test Result: Pass
-      System.out.print("http://www.google.ae : ");
+      System.out.print("\nhttp://www.google.ae");
+      System.out.print("\nExpected Results: true, Test Results: ");
       System.out.println(urlVal.isValid("http://www.google.ae"));
 
       // Expected Result: Pass, Test Result: FAIL
-      System.out.print("http://www.google.je :");
+      System.out.print("\nhttp://www.google.je");
+      System.out.print("\nExpected Results: true, Test Results: ");
       System.out.println(urlVal.isValid("http://www.google.je"));
 
       // Expected Result: Pass, Test Result: FAIL
-      System.out.print("http://www.google.zw : ");
+      System.out.print("\nhttp://www.google.zw");
+      System.out.print("\nExpected Results: true, Test Results: ");
       System.out.println(urlVal.isValid("http://www.google.zw"));
 
       // Expected Result: Fail, Test Result: Fail
-      System.out.print("http://www.google.notacountry : ");
+      System.out.print("\nhttp://www.google.notacountry");
+      System.out.print("\nExpected Results: false, Test Results: ");
       System.out.println(urlVal.isValid("http://www.google.notacountry"));
 
       // Expected Result: Pass, Test Result: Pass
-      System.out.print("http://www.google.com/gmail : ");
+      System.out.print("\nhttp://www.google.com/gmail");
+      System.out.print("\nExpected Results: true, Test Results: ");
       System.out.println(urlVal.isValid("http://www.google.com/gmail"));
 
       // Expected Result: Pass, Test Result: Pass
-      System.out.print("http://www.google.com/gmail/more : ");
+      System.out.print("\nhttp://www.google.com/gmail/more");
+      System.out.print("\nExpected Results: true, Test Results: ");
       System.out.println(urlVal.isValid("http://www.google.com/gmail/more"));
 
       // Expected Result: Pass, Test Result: Pass
-      System.out.print("https://www.google.com/gmail : ");
+      System.out.print("\nhttps://www.google.com/gmail");
+      System.out.print("\nExpected Results: true, Test Results: ");    
       System.out.println(urlVal.isValid("https://www.google.com/gmail"));
 
       // Expected Result: Pass, Test Result: Pass
-      System.out.print("http://www.google.com/gmail/hello.txt : ");
+      System.out.print("\nhttp://www.google.com/gmail/hello.txt");
+      System.out.print("\nExpected Results: true, Test Results: ");
       System.out.println(urlVal.isValid("ftp://www.google.com/gmail/hello.txt"));
 
-      // Expected Result: Fail, Test Result: Fail
-      System.out.print("https://www.google.com : ");
+      // Expected Result: Pass, Test Result: Pass
+      System.out.print("\nhttps://www.google.com");
+      System.out.print("\nExpected Results: true, Test Results: ");
       System.out.println(urlVal.isValid("https://www.google.com"));
 
       // Expected Result: Fail, Test Result: PASS
-      System.out.print("httpzz://www.google.com : ");
+      System.out.print("\nhttpzz://www.google.com");
+      System.out.print("\nExpected Results: false, Test Results: ");
       System.out.println(urlVal.isValid("httpzz://www.google.com"));
 
-      System.out.print("ftp://www.google.com : ");
+      // Expected Result: Pass, Test Result: Pass
+      System.out.print("\nftp://www.google.com");
+      System.out.print("\nExpected Results: true, Test Results: ");
       System.out.println(urlVal.isValid("ftp://www.google.com"));
 
-      System.out.print("ftpxyz://www.google.com : ");
+      // Expected Result: Fail, Test Result: PASS
+      System.out.print("\nftpxyz://www.google.com");
+      System.out.print("\nExpected Results: false, Test Results: ");
       System.out.println(urlVal.isValid("ftpxyz://www.google.com"));
 
-      System.out.print("ahttp://www.google.com : ");
+      // Expected Result: Fail, Test Result: PASS
+      System.out.print("\nahttp://www.google.com");
+      System.out.print("\nExpected Results: false, Test Results: ");
       System.out.println(urlVal.isValid("ahttp://www.google.com"));
 
-      System.out.print("h++p://www.google.com : ");
+      // Expected Result: Fail, Test Result: PASS
+      System.out.print("\nh++p://www.google.com");
+      System.out.print("\nExpected Results: false, Test Results: ");
       System.out.println(urlVal.isValid("h++p://www.google.com"));
 
-      System.out.print("hxxp://www.google.com : ");
+      // Expected Result: Fail, Test Result: PASS
+      System.out.print("\nhxxp://www.google.com");
+      System.out.print("\nExpected Results: false, Test Results: ");
       System.out.println(urlVal.isValid("hxxp://www.google.com"));
 
+      
       // Testing Ports
-      System.out.printf("%nTesting Ports:%n");
+      System.out.print("\nTesting Ports:");
 
       // Expected Result: Fail, Test Result: Fail
-      System.out.print("http://www.google.com : (Missing Port)");
+      System.out.print("\nhttp://www.google.com:(Missing Port)");
+      System.out.print("\nExpected Results: false, Test Results: ");
       System.out.println(urlVal.isValid("http://www.google.com:"));
 
       // Expected Result: Pass, Test Result: Pass
+      System.out.print("\nhttp://www.google.com:1");
+      System.out.print("\nExpected Results: true, Test Results: ");
       System.out.println(urlVal.isValid("http://www.google.com:1"));
 
       // Expected Result: Pass, Test Result: Pass
+      System.out.print("\nhttp://www.google.com:12");
+      System.out.print("\nExpected Results: true, Test Results: ");
       System.out.println(urlVal.isValid("http://www.google.com:12"));
 
       // Expected Result: Pass, Test Result: Pass
-      System.out.print("http://www.google.com:123: ");
+      System.out.print("\nhttp://www.google.com:123");
+      System.out.print("\nExpected Results: true, Test Results: ");
       System.out.println(urlVal.isValid("http://www.google.com:123"));
 
       // Expected Result: Pass, Test Result: FAIL
+      System.out.print("\nhttp://www.google.com:1234");
+      System.out.print("\nExpected Results: true, Test Results: ");
       System.out.println(urlVal.isValid("http://www.google.com:1234"));
 
       // Expected Result: Pass, Test Result: FAIL
+      System.out.print("\nhttp://www.google.com:65535");
+      System.out.print("\nExpected Results: true, Test Results: ");
       System.out.println(urlVal.isValid("http://www.google.com:65535"));
 
       // Expected Result: Fail, Test Result: Fail
+      System.out.print("\nhttp://www.google.com:65536");
+      System.out.print("\nExpected Results: false, Test Results: ");
       System.out.println(urlVal.isValid("http://www.google.com:65536"));
 
       // Expected Result: Fail, Test Result: Fail
+      System.out.print("\nhttp://www.google.com:123456");
+      System.out.print("\nExpected Results: false, Test Results: ");
       System.out.println(urlVal.isValid("http://www.google.com:123456"));
 
       // Expected Result: Fail, Test Result: Fail
+      System.out.print("\nhttp://www.google.com:1 1");
+      System.out.print("\nExpected Results: false, Test Results: ");
       System.out.println(urlVal.isValid("http://www.google.com:1 1"));
 
+      
       // Testing IP Address
-      System.out.printf("%nTesting IP Addresses:%n");
+      System.out.print("\nTesting IP Addresses:");
 
       // Expected Result: Pass, Test Result: Pass
+      System.out.print("\nhttp://216.58.195.78");
+      System.out.print("\nExpected Results: true, Test Results: ");
       System.out.println(urlVal.isValid("http://216.58.195.78"));
 
       // Expected Result: Pass, Test Result: Pass
+      System.out.print("\nhttp://216.58.195.255");
+      System.out.print("\nExpected Results: true, Test Results: ");
       System.out.println(urlVal.isValid("http://216.58.195.255"));
 
       // Expected Result: Fail, Test Result: PASS
+      System.out.print("\nhttp://216.58.195.256");
+      System.out.print("\nExpected Results: false, Test Results: ");
       System.out.println(urlVal.isValid("http://216.58.195.256"));
 
       // Expected Result: Fail, Test Result: PASS
+      System.out.print("\nhttp://216.58.195.666");
+      System.out.print("\nExpected Results: false, Test Results: ");
       System.out.println(urlVal.isValid("http://216.58.195.666"));
 
+      
       // Testing Other Stuff
-      System.out.printf("%nTesting Other Stuff:%n");
+      System.out.print("\nTesting Other Stuff:");
 
       // Expected Result: Pass, Test Result: FAIL
+      System.out.print("\nhttps://piazza.com/class/j4bo6gz138r46l?cid=158");
+      System.out.print("\nExpected Results: true, Test Results: ");
       System.out.println(urlVal.isValid("https://piazza.com/class/j4bo6gz138r46l?cid=158"));
 
       // Expected Result: Pass, Test Result: FAIL
+      System.out.print("\nhttp://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/kepler/SR2/eclipse-standard-kepler-SR2-win32-x86_64.zip");
+      System.out.print("\nExpected Results: true, Test Results: ");
       System.out.println(urlVal.isValid("http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/kepler/SR2/eclipse-standard-kepler-SR2-win32-x86_64.zip"));
 
       // Expected Result: Fail, Test Result: PASS
+      System.out.print("\nh++p://www.google.com");
+      System.out.print("\nExpected Results: false, Test Results: ");
       System.out.println(urlVal.isValid("h++p://www.google.com"));
 
       // Expected Result: Fail, Test Result: Fail
+      System.out.print("\nhttp://www.goo?gle.com");
+      System.out.print("\nExpected Results: false, Test Results: ");
       System.out.println(urlVal.isValid("http://www.goo?gle.com"));
    }
    
