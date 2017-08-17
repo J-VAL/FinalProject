@@ -66,22 +66,14 @@ public class UrlValidatorTest extends TestCase {
 		 };
    String[] portSet = {
 		   "", 
-		   ":1", 
-		   ":20", 
-		   ":300",
-		   ":4000",
-		   ":65535",
-		   ":-1",
-		   ":65536",
-		   ":55aba"
 		 };
-   String[] pathSet = {
-		   "/../", 
+   String[] pathSet = { 
 		   "/test", 
 		   "/test/", 
 		   "/123/",
 		   "/test/test",
 		   "/test/test/",
+		   "/../",
 		   ""
 		 };
    String[] querySet = {
@@ -365,10 +357,11 @@ public class UrlValidatorTest extends TestCase {
    public void testRandomScheme()
    {
 	   UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
-	   boolean valid = true;
+	   
 	   int i = 0;
 	   while (i<10000)
 	   {
+		   boolean valid = true;
 		    String randomAuth = authSet[0];
 		    String randomPort = portSet[0];
 		    String randomPath = pathSet[0];
@@ -393,20 +386,24 @@ public class UrlValidatorTest extends TestCase {
 	    String randomPath = pathSet[0];
 	    String randomQuery = querySet[0];
 	   UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
-	   boolean valid = true;
+	   
 	   int i = 0;
 	   while (i<10000)
 	   {
+		   boolean valid = true;
 		    int j = (int)(Math.random() * authSet.length);
 		    String randomAuth = shuffle(authSet[j]);
 		    char [] charAuth = randomAuth.toCharArray();
-		    if(j < 3 && randomAuth.substring((charAuth.length - 4),charAuth.length - 1) != ".com")
+		    if(charAuth[0] == '.')
 		    	valid = false;
-		    else if(j == 3 && randomAuth.substring((charAuth.length - 3),charAuth.length - 1) != ".au")
-		    	valid = false;
+		    if(j < 4)
+		    {
+		    	if ( charAuth[charAuth.length-1] == '.' || charAuth[charAuth.length-2] == '.')
+		    		valid = false;
+		    }
 		    else
 		    {
-		    	if(randomAuth != authSet[4] && randomAuth != authSet[5])
+		    	if(!randomAuth.equals(authSet[4]) && !randomAuth.equals(authSet[5]))
 		    		valid = false;
 		    }
 		    String fullUrl = randomScheme + randomAuth + randomPort + randomPath + randomQuery;
@@ -422,20 +419,26 @@ public class UrlValidatorTest extends TestCase {
 	    String randomScheme = schemeSet[0];
 	    String randomQuery = querySet[0];
 	   UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
-	   boolean valid = true;
 	   int i = 0;
 	   while (i<10000)
 	   {
+		    boolean valid = true;
 		    int j = (int)(Math.random() * pathSet.length);
 		    String randomPath = shuffle(pathSet[j]);
 		    char[] charPath = randomPath.toCharArray();
-		    if(randomPath != "" || charPath[0] == '/')
+		    if(randomPath.length() != 0 && charPath[0] == '/')
 		    {
-		    	for(int k = 0;k<charPath.length - 2;k++)
+		    	for(int k = 0;k<charPath.length - 1;k++)
 		    	{
-		    		if(charPath[k] == '/' && charPath[k+1] == '/' && charPath[k+2] == '/')
+		    		if(charPath[k] == '/' && charPath[k+1] == '/')
+		    			valid = false;
+		    		else if(charPath[k] == '.' && charPath[k+1] == '.' )
 		    			valid = false;
 		    	}
+		    }
+		    else if( randomPath.length() == 0 )
+		    {
+		    	//do nothing
 		    }
 		    else
 		    	valid = false;
@@ -452,13 +455,14 @@ public class UrlValidatorTest extends TestCase {
 	    String randomPath = pathSet[0];
 	    String randomQuery = querySet[0];
 	   UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
-	   boolean valid = true;
+	   
 	   int i = 0;
 	   while (i<10000)
 	   {
-		    int j = (int)(Math.random() * portSet.length);
-		    String randomPort = portSet[j];
-		    if(j>5)
+		   boolean valid = true;
+		    int j = (int)(Math.random() * 100000) - 10000;
+		    String randomPort = ":" + Integer.toString(j);
+		    if(j<0 || j>65535)
 		    	valid = false;
 		    String fullUrl = randomScheme + randomAuth + randomPort + randomPath + randomQuery;
 		    System.out.println(urlVal.isValid(fullUrl) + " URL: " + randomScheme + randomAuth + randomPort + randomPath + randomQuery + " Valid: " + valid );
@@ -473,10 +477,11 @@ public class UrlValidatorTest extends TestCase {
 	    String randomPath = pathSet[0];
 	    String randomScheme = schemeSet[0];
 	   UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
-	   boolean valid = true;
+	   
 	   int i = 0;
 	   while (i<10000)
 	   {
+		   boolean valid = true;
 		    int j = (int)(Math.random() * querySet.length);
 		    String randomQuery = shuffle(querySet[j]);
 		    char[] charQuery = randomQuery.toCharArray();
@@ -485,39 +490,59 @@ public class UrlValidatorTest extends TestCase {
 	    	int minAnd = charQuery.length - 1;
 	    	if(j != 0)
 	    	{
+	    		if(charQuery[charQuery.length-1] == '&' || charQuery[charQuery.length-1] == '=')
+	    			valid = false;
+	    		int equalCount = 0;
+	    		int andCount = 0;
+	    		for(int l = 0;l<charQuery.length;l++)
+	    		{
+	    			if(charQuery[l] == '=')
+	    			{
+	    				equalCount += 1;
+	    				andCount = 0;
+	    			}
+	    			if(charQuery[l] == '&')
+	    			{
+	    				equalCount = 0;
+	    				andCount += 1;
+	    			}
+	    			if(equalCount > 1 || andCount > 1)
+	    				valid = false;
+	    			
+	    		}
 		    for(int k = 0;k<charQuery.length-1;k++)
 		    {
 		    	int And;
 		    	int Equals;
 		    	if(charQuery[k] == '?')
 		    		question = k;
-		    	else if(charQuery[k+1] == '?')
+		    	if(charQuery[k+1] == '?')
 		    		question = k+1;
-		    	else if(charQuery[k] == '&')
+		    	if(charQuery[k] == '&')
 		    	{
 		    		And = k;
 		    		if(And<minAnd)
 		    			minAnd = And;
 		    	}
-		    	else if(charQuery[k+1] == '&')
+		    	if(charQuery[k+1] == '&')
 		    	{
 		    		And = k+1;
 		    		if(And<minAnd)
 		    			minAnd = And;
 		    	}
-		    	else if(charQuery[k] == '=')
+		    	if(charQuery[k] == '=')
 		    	{
 		    		Equals = k;
 		    		if(Equals<minEquals)
 		    			minEquals = Equals;
 		    	}
-		    	else if(charQuery[k+1] == '=')
+		    	if(charQuery[k+1] == '=')
 		    	{
 		    		Equals = k+1;
 		    		if(Equals<minEquals)
 		    			minEquals = Equals;
 		    	}
-		    	else if(charQuery[k] == '?' && charQuery[k+1] == '='
+		    	if(charQuery[k] == '?' && charQuery[k+1] == '='
 		    			|| charQuery[k] == '?' && charQuery[k+1] == '&'
 		    			|| charQuery[k] == '=' && charQuery[k+1] == '&'
 		    			|| charQuery[k] == '&' && charQuery[k+1] == '=')
