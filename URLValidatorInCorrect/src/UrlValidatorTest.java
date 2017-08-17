@@ -303,19 +303,42 @@ public class UrlValidatorTest extends TestCase {
    }
    
    
-   public void testIsValid()
+   public void testRandomScheme()
    {
 	   UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
 	   boolean valid = true;
 	   int i = 0;
 	   while (i<10000)
 	   {
+		    String randomAuth = authSet[0];
+		    String randomPort = portSet[0];
+		    String randomPath = pathSet[0];
+		    String randomQuery = querySet[0];
 		    int j = (int)(Math.random() * schemeSet.length);
 			String randomScheme = shuffle(schemeSet[j]);	   
 		    if(randomScheme != schemeSet[0] && randomScheme != schemeSet[1]
 		    		&& randomScheme != schemeSet[2] && randomScheme != schemeSet[3])
 		    	valid = false;
-		    j = (int)(Math.random() * authSet.length);
+
+		    String fullUrl = randomScheme + randomAuth + randomPort + randomPath + randomQuery;
+		    System.out.println(urlVal.isValid(fullUrl) + " URL: " + randomScheme + randomAuth + randomPort + randomPath + randomQuery + " Valid: " + valid );
+			i++;
+	   }
+	   
+   }
+   
+   public void testRandomAuth()
+   {
+	   String randomScheme = schemeSet[0];
+	    String randomPort = portSet[0];
+	    String randomPath = pathSet[0];
+	    String randomQuery = querySet[0];
+	   UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
+	   boolean valid = true;
+	   int i = 0;
+	   while (i<10000)
+	   {
+		    int j = (int)(Math.random() * authSet.length);
 		    String randomAuth = shuffle(authSet[j]);
 		    char [] charAuth = randomAuth.toCharArray();
 		    if(j < 3 && randomAuth.substring((charAuth.length - 4),charAuth.length - 1) != ".com")
@@ -327,11 +350,24 @@ public class UrlValidatorTest extends TestCase {
 		    	if(randomAuth != authSet[4] && randomAuth != authSet[5])
 		    		valid = false;
 		    }
-		    j = (int)(Math.random() * portSet.length);
-		    String randomPort = portSet[j];
-		    if(j>5)
-		    	valid = false;
-		    j = (int)(Math.random() * pathSet.length);
+		    String fullUrl = randomScheme + randomAuth + randomPort + randomPath + randomQuery;
+		    System.out.println(urlVal.isValid(fullUrl) + " URL: " + randomScheme + randomAuth + randomPort + randomPath + randomQuery + " Valid: " + valid );
+			i++;
+	   }
+   }
+   
+   public void testRandomPath()
+   {
+	   String randomAuth = authSet[0];
+	    String randomPort = portSet[0];
+	    String randomScheme = schemeSet[0];
+	    String randomQuery = querySet[0];
+	   UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
+	   boolean valid = true;
+	   int i = 0;
+	   while (i<10000)
+	   {
+		    int j = (int)(Math.random() * pathSet.length);
 		    String randomPath = shuffle(pathSet[j]);
 		    char[] charPath = randomPath.toCharArray();
 		    if(randomPath != "" || charPath[0] == '/')
@@ -344,7 +380,45 @@ public class UrlValidatorTest extends TestCase {
 		    }
 		    else
 		    	valid = false;
-		    j = (int)(Math.random() * querySet.length);
+		    String fullUrl = randomScheme + randomAuth + randomPort + randomPath + randomQuery;
+		    System.out.println(urlVal.isValid(fullUrl) + " URL: " + randomScheme + randomAuth + randomPort + randomPath + randomQuery + " Valid: " + valid );
+			i++;
+	   }
+   }
+   
+   public void testRandomPort()
+   {
+	   String randomAuth = authSet[0];
+	    String randomScheme = schemeSet[0];
+	    String randomPath = pathSet[0];
+	    String randomQuery = querySet[0];
+	   UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
+	   boolean valid = true;
+	   int i = 0;
+	   while (i<10000)
+	   {
+		    int j = (int)(Math.random() * portSet.length);
+		    String randomPort = portSet[j];
+		    if(j>5)
+		    	valid = false;
+		    String fullUrl = randomScheme + randomAuth + randomPort + randomPath + randomQuery;
+		    System.out.println(urlVal.isValid(fullUrl) + " URL: " + randomScheme + randomAuth + randomPort + randomPath + randomQuery + " Valid: " + valid );
+			i++;
+	   }
+   }
+   
+   public void testRandomQuery()
+   {
+	   String randomAuth = authSet[0];
+	    String randomPort = portSet[0];
+	    String randomPath = pathSet[0];
+	    String randomScheme = schemeSet[0];
+	   UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
+	   boolean valid = true;
+	   int i = 0;
+	   while (i<10000)
+	   {
+		    int j = (int)(Math.random() * querySet.length);
 		    String randomQuery = shuffle(querySet[j]);
 		    char[] charQuery = randomQuery.toCharArray();
 	    	int question = charQuery.length-1;
@@ -393,25 +467,17 @@ public class UrlValidatorTest extends TestCase {
 		    if(minEquals < question || minAnd < question)
 		    	valid = false;
 		    String fullUrl = randomScheme + randomAuth + randomPort + randomPath + randomQuery;
-		    if(valid)
-		    	assert(urlVal.isValid(fullUrl));
-		    else
-		    	assert(!urlVal.isValid(fullUrl));
+		    System.out.println(urlVal.isValid(fullUrl) + " URL: " + randomScheme + randomAuth + randomPort + randomPath + randomQuery + " Valid: " + valid );
 			i++;
 	   }
-	   }
    }
-   
-   public void testAnyOtherUnitTest()
-   {
-	   
-   }
+  
    /**
     * Create set of tests by taking the testUrlXXX arrays and
     * running through all possible permutations of their combinations.
     *
     * @param testObjects Used to create a url.
     */
-   
+   }
 
 }
