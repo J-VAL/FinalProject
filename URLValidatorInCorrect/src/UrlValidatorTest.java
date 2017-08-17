@@ -394,12 +394,15 @@ public class UrlValidatorTest extends TestCase {
 		    int j = (int)(Math.random() * authSet.length);
 		    String randomAuth = shuffle(authSet[j]);
 		    char [] charAuth = randomAuth.toCharArray();
-		    if(charAuth[0] == '.')
+		    if(charAuth[0] == '.' || charAuth[charAuth.length-1] == '.')
 		    	valid = false;
 		    if(j < 4)
 		    {
-		    	if ( charAuth[charAuth.length-1] == '.' || charAuth[charAuth.length-2] == '.')
-		    		valid = false;
+		    	for(int k = 0;k<charAuth.length - 1;k++)
+		    	{
+		    		if(charAuth[k] == '.' && charAuth[k+1] == '.' )
+		    			valid = false;
+		    	}
 		    }
 		    else
 		    {
