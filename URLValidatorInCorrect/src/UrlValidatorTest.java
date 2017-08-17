@@ -52,7 +52,7 @@ public class UrlValidatorTest extends TestCase {
 		   "http://",
 		   "ftp://",
 		   "h3t://",
-		   "\"\""
+		   ""
 		 };
    String[] authSet = {
 		   "www.google.com", 
@@ -63,7 +63,7 @@ public class UrlValidatorTest extends TestCase {
 		   "0.0.0.0"
 		 };
    String[] portSet = {
-		   "\"\"", 
+		   "", 
 		   ":1", 
 		   ":20", 
 		   ":300",
@@ -80,10 +80,10 @@ public class UrlValidatorTest extends TestCase {
 		   "/123/",
 		   "/test/test",
 		   "/test/test/",
-		   "\"\""
+		   ""
 		 };
    String[] querySet = {
-		   "\"\"", 
+		   "", 
 		   "?name=Mike", 
 		   "?name=Mike&color=red", 
 		   "?name=Mike&color=red&food=apple"  
@@ -350,7 +350,9 @@ public class UrlValidatorTest extends TestCase {
 	    	int question = charQuery.length-1;
 	    	int minEquals = charQuery.length - 1;
 	    	int minAnd = charQuery.length - 1;
-		    for(int k = 0;k<charPath.length-1;k++)
+	    	if(j != 0)
+	    	{
+		    for(int k = 0;k<charQuery.length-1;k++)
 		    {
 		    	int And;
 		    	int Equals;
@@ -396,6 +398,7 @@ public class UrlValidatorTest extends TestCase {
 		    else
 		    	assert(!urlVal.isValid(fullUrl));
 			i++;
+	   }
 	   }
    }
    
