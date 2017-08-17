@@ -41,12 +41,14 @@ public class UrlValidatorTest extends TestCase {
 	   char[] chars = string.toCharArray();
 	    for (int i = 0; i < chars.length; i++) {
 	        int j = (int)(Math.random() * chars.length);
-	        chars[i] ^= chars[j];
-	        chars[j] ^= chars[i];
-	        chars[i] ^= chars[j];
+	        char temp = chars[i];
+	        chars[i] = chars[j];
+	        chars[j] = temp;
 	    }
 	    return new String(chars);
    }
+   
+   
 
    String[] schemeSet = {
 		   "http://",
